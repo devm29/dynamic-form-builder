@@ -104,6 +104,28 @@ describe('DynamicForm Component', () => {
     expect(fieldTotal).toHaveValue(50);
   });
 
+  it('recalculates task and material totals when quantity or rate changes', () => {
+    renderComponent();
+
+    const taskQuantity = screen.getAllByLabelText('Quantity')[0] as HTMLInputElement;
+    const taskRate = screen.getAllByLabelText('Rate')[0] as HTMLInputElement;
+    const taskTotal = screen.getAllByLabelText('Total')[0] as HTMLInputElement;
+
+    fireEvent.change(taskQuantity, { target: { value: 2 } });
+    fireEvent.change(taskRate, { target: { value: 7 } });
+
+    expect(taskTotal).toHaveValue(14);
+
+    const materialQuantity = screen.getAllByLabelText('Quantity')[1] as HTMLInputElement;
+    const materialRate = screen.getAllByLabelText('Rate')[1] as HTMLInputElement;
+    const materialTotal = screen.getAllByLabelText('Total')[1] as HTMLInputElement;
+
+    fireEvent.change(materialQuantity, { target: { value: 3 } });
+    fireEvent.change(materialRate, { target: { value: 5 } });
+
+    expect(materialTotal).toHaveValue(15);
+  });
+
   it('adds a new group when clicking the "+" button', () => {
     renderComponent();
 

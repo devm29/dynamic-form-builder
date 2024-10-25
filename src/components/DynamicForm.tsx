@@ -11,15 +11,23 @@ import { DEFAULT_FORM_VALUES, DEFAULT_GROUP_VALUE } from '../constants';
 import { useNavigate } from 'react-router-dom';
 
 export const DynamicForm: React.FC = () => {
-  const methods = useForm<TFormData>({ defaultValues: DEFAULT_FORM_VALUES, resolver: yupResolver(schema) });
+  const methods = useForm<TFormData>({
+    defaultValues: DEFAULT_FORM_VALUES,
+    resolver: yupResolver(schema),
+    mode: 'onBlur',
+    reValidateMode: 'onChange',
+  });
   const navigate = useNavigate();
   const { control, handleSubmit } = methods;
   const { fields: groupFields, append: appendGroup, remove: removeGroup } = useFieldArray({ control, name: 'groups' });
   const { errors } = useFormState({ control });
 
-  const onSubmit: SubmitHandler<TFormData> = useCallback((data) => {
-    navigate('/results', { state: { formData: data } });
-  }, []);
+  const onSubmit: SubmitHandler<TFormData> = useCallback(
+    (data) => {
+      navigate('/results', { state: { formData: data } });
+    },
+    [navigate]
+  );
 
   return (
     <FormProvider {...methods}>
