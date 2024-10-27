@@ -30,7 +30,7 @@ export const MaterialFields: React.FC<Props> = ({ groupIndex, taskIndex }) => {
     watchedMaterials.forEach((material, materialIndex) => {
       const quantity = Number(material?.quantity ?? 0);
       const rate = Number(material?.rate ?? 0);
-      const total = quantity * rate;
+      const total = Number.isFinite(quantity) && Number.isFinite(rate) ? quantity * rate : 0;
 
       if (!Number.isNaN(total)) {
         setValue(`groups.${groupIndex}.tasks.${taskIndex}.materials.${materialIndex}.total`, total, {

@@ -33,7 +33,7 @@ export const TaskFields: React.FC<Props> = ({ groupIndex }) => {
     watchedTasks.forEach((task, taskIndex) => {
       const quantity = Number(task?.quantity ?? 0);
       const rate = Number(task?.rate ?? 0);
-      const total = quantity * rate;
+      const total = Number.isFinite(quantity) && Number.isFinite(rate) ? quantity * rate : 0;
 
       if (!Number.isNaN(total)) {
         setValue(`groups.${groupIndex}.tasks.${taskIndex}.total`, total, {
